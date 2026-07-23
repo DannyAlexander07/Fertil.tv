@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Fértil</title>
+  <meta name="description" content="Fértil: quiénes somos, nuestros fundadores y cómo trabajamos.">
+  <link rel="stylesheet" href="../CSS/style.css?v=3">
+  <link rel="stylesheet" href="../CSS/about.css?v=3">
+</head>
+<body class="about-page">
+
+  <!-- Nav: fondo mostaza (igual que Directors/Contact) -- texto oscuro por defecto, píldora oscura al flotar. -->
+  <header class="nav nav--on-light" data-nav data-nav-behavior="float-on-scroll">
+    <a class="nav__brand" href="../index.html">In Craft We Trust</a>
+
+    <nav class="nav__links" aria-label="Navegación principal">
+      <a href="../pages/directors.html">Directors</a>
+      <a href="../pages/press.html">Press</a>
+      <a href="../pages/about.html" aria-current="page">About</a>
+      <a href="../pages/contact.html">Contact</a>
+    </nav>
+
+    <button class="nav__toggle" data-nav-toggle aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <div class="nav__menu-overlay" id="mobile-menu" data-nav-overlay data-open="false">
+    <ul>
+      <li><a href="../pages/directors.html">Directors</a></li>
+      <li><a href="../pages/press.html">Press</a></li>
+      <li><a href="../pages/about.html" aria-current="page">About</a></li>
+      <li><a href="../pages/contact.html">Contact</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <!-- =====================================================================
+         1. HERO -- fondo mostaza. El logo grande "Fértil" es UN SOLO
+         elemento: mientras se hace scroll por los 3 párrafos queda "pegado"
+         (visualmente fijo, centrado en pantalla) vía about.js, que le suma
+         la clase .is-pinned (position:fixed) hasta que el scroll normal de
+         la página alcanza su ubicación de reposo (data-logo-slot, ya
+         reservada en el flujo justo antes de la fila de íconos) -- en ese
+         instante exacto se saca .is-pinned y sigue de largo en flujo normal,
+         sin salto ni segunda copia. Al pasar por encima de cada párrafo, la
+         silueta de sus letras revela una copia "fantasma" de ese mismo
+         texto en un tono blanquecino (ver about.js -- initLogoPin). -->
+    <section class="about-hero">
+      <div class="about-hero__copy">
+        <p class="about-hero__lede reveal-text" data-reveal>
+          <span class="reveal-text__base">Fértil is a production company specialized in creating high-end work for brands, agencies and studios from around the world.</span>
+          <span class="reveal-text__ghost" aria-hidden="true">Fértil is a production company specialized in creating high-end work for brands, agencies and studios from around the world.</span>
+        </p>
+
+        <p class="about-hero__lede reveal-text" data-reveal>
+          <span class="reveal-text__base">We develop commercials, experiences and institutional pieces with a cinematic eye, paying close attention to craft, narrative and depth of every creative process.</span>
+          <span class="reveal-text__ghost" aria-hidden="true">We develop commercials, experiences and institutional pieces with a cinematic eye, paying close attention to craft, narrative and depth of every creative process.</span>
+        </p>
+
+        <p class="about-hero__lede reveal-text" data-reveal>
+          <span class="reveal-text__base">We collaborate with some of the region's leading advertising agencies for clients including Adidas, Nike, AB InBev, La Tinka, Skynn, BBVA, Cabify, among others. Our work has earned major industry recognition, including a Grand Prix at Cannes Lions.</span>
+          <span class="reveal-text__ghost" aria-hidden="true">We collaborate with some of the region's leading advertising agencies for clients including Adidas, Nike, AB InBev, La Tinka, Skynn, BBVA, Cabify, among others. Our work has earned major industry recognition, including a Grand Prix at Cannes Lions.</span>
+        </p>
+      </div>
+
+      <div class="about-hero__logo-slot" data-logo-slot>
+        <img class="about-hero__logo is-pinned" data-logo-img src="../recursos/img/fertil-logo-black.png" alt="Fértil">
+      </div>
+
+      <div class="about-hero__icons-row">
+        <img src="../recursos/icons/iconos-pie-about.png?v=2" alt="">
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         2. FOUNDERS -- fondo negro, imagen decorativa de letras sueltas
+         centrada (asset ya armado: seccion-about-letras-desktop / movil).
+         ===================================================================== -->
+    <section class="about-founders-title">
+      <picture>
+        <source media="(max-width: 768px)" srcset="../recursos/icons/seccion-about-letras-movil.png">
+        <img src="../recursos/icons/seccion-about-letras-desktop.png" alt="Founders" loading="lazy">
+      </picture>
+    </section>
+
+    <!-- =====================================================================
+         3. FOUNDERS -- bios. Ícono ilustrado de cada fundador como fondo
+         decorativo detrás de su propio texto (baja opacidad).
+         TODO: reemplazar el texto de las bios por el texto real (pendiente
+         de confirmación del cliente -- ver nota en about.css / conversación).
+         ===================================================================== -->
+    <section class="about-founder-list">
+      <article class="founder founder--tarek">
+        <div class="founder__media">
+          <img src="../recursos/img/founders/tarek.jpg" alt="Tarek Pérez A.">
+        </div>
+        <div class="founder__copy">
+          <img class="founder__icon" src="../recursos/icons/icono-tarek-about.png" alt="" aria-hidden="true">
+          <h2 class="founder__name">Tarek Pérez A.</h2>
+          <p class="founder__role">Partner &amp; Executive Producer</p>
+          <p class="founder__bio" data-bio-placeholder>
+            [Texto pendiente -- bio de Tarek Pérez A.]
+          </p>
+        </div>
+      </article>
+
+      <article class="founder founder--santiago">
+        <div class="founder__copy">
+          <img class="founder__icon" src="../recursos/icons/Icono-santiago-about.png" alt="" aria-hidden="true">
+          <h2 class="founder__name">Santiago Chávez</h2>
+          <p class="founder__role">Partner &amp; Director</p>
+          <p class="founder__bio" data-bio-placeholder>
+            [Texto pendiente -- bio de Santiago Chávez.]
+          </p>
+        </div>
+        <div class="founder__media">
+          <img src="../recursos/img/founders/santiago.jpg" alt="Santiago Chávez">
+        </div>
+      </article>
+    </section>
+
+    <!-- =====================================================================
+         4. CIERRE -- panel rosa/durazno con la firma grande de Fértil.
+         ===================================================================== -->
+    <section class="about-close">
+      <img class="about-close__signature" src="../recursos/icons/logo-fertil-signature.png" alt="Fértil">
+
+      <div class="page-footer">
+        <div class="social-row">
+          <a href="https://www.instagram.com/fertil.tv/" target="_blank" rel="noopener" aria-label="Instagram de Fértil">
+            <img src="../recursos/icons/instagram.png" alt="">
+          </a>
+          <a href="https://www.linkedin.com/company/fertil/" target="_blank" rel="noopener" aria-label="LinkedIn de Fértil">
+            <img src="../recursos/icons/linkedin.png" alt="">
+          </a>
+        </div>
+        <a class="about-close__email" href="mailto:info@fertil.tv">info@fértil.tv</a>
+        <img class="isotype-mark" src="../recursos/icons/isotype-hand.png" alt="" aria-hidden="true">
+      </div>
+    </section>
+  </main>
+
+  <script src="../JS/main.js?v=3"></script>
+  <script src="../JS/about.js?v=3"></script>
+</body>
+</html>

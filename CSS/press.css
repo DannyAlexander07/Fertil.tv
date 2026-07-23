@@ -3,7 +3,10 @@
    Página de Press: fondo negro (igual que Inicio, no lleva nav--on-light).
    Lista de notas de prensa -- título + copete a la izquierda, foto a la
    derecha en desktop; en mobile/tablet se apilan (foto debajo del texto).
-   Título y foto del bloque completo linkean a la nota original.
+   Solo el título y la foto linkean a la nota original (el copete NO es
+   clickeable) -- por eso .press-item__row ya no es un <a>, sino un div
+   contenedor: el link vive en un <a> propio dentro del título y otro
+   dentro de la imagen.
    ========================================================================= */
 
 .press-hero {
@@ -28,7 +31,7 @@
   margin: 0 auto;
 }
 
-.press-item__link {
+.press-item__row {
   display: flex;
   align-items: center;
   gap: var(--space-6);
@@ -51,8 +54,15 @@
   font-size: clamp(20px, 2.3vw, 30px);
   line-height: 1.28;
   margin-bottom: var(--space-3);
+}
+
+/* El link vive DENTRO del título (no en toda la fila): solo el texto del
+   titular es clickeable, el copete de abajo no. */
+.press-item__title a {
   transition: opacity var(--duration-fast) var(--ease-default);
 }
+
+.press-item__title a:hover { opacity: 0.7; }
 
 .press-item__excerpt {
   font-family: var(--font-ui);
@@ -72,6 +82,12 @@
   background: #111;
 }
 
+.press-item__media a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 .press-item__media img {
   width: 100%;
   height: 100%;
@@ -79,8 +95,7 @@
   transition: transform var(--duration-base) var(--ease-default);
 }
 
-.press-item__link:hover .press-item__title { opacity: 0.7; }
-.press-item__link:hover .press-item__media img { transform: scale(1.04); }
+.press-item__media a:hover img { transform: scale(1.04); }
 
 /* ---------------------------------------------------------------------
    Footer -- mismo social-row + isotype-mark reutilizados de style.css,
@@ -88,7 +103,9 @@
    no es de una sola pantalla como Contact).
 --------------------------------------------------------------------- */
 .press-hero .page-footer {
-  margin-top: var(--space-7);
+  /* Más separado de la última noticia (antes quedaba pegado justo debajo
+     de la última foto). */
+  margin-top: clamp(120px, 14vw, 180px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -99,11 +116,39 @@
   opacity: 0.92;
 }
 
+/* Los íconos ya traen su propia forma recortada -- sin círculo/fondo extra
+   (mismo criterio que Contact/Directors). */
+.press-page .social-row a {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+}
+.press-page .social-row a:hover {
+  background: none;
+  transform: translateY(-2px);
+}
+.press-page .social-row img {
+  width: 36px;
+  height: auto;
+  display: block;
+}
+
 @media (max-width: 900px) {
-  .press-item__link {
+  .press-item__row {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-3);
+  }
+  .press-item__text,
+  .press-item__media {
+    /* En fila (desktop) el 50/50 se logra con flex:1 1 0 -- pero en
+       columna ese mismo flex-basis:0 hace que .media (que tiene
+       overflow:hidden, así que no aplica la protección de min-size:auto
+       que sí salva a .text) termine con altura 0 y la imagen desaparezca.
+       En columna cada bloque debe ocupar su tamaño natural, no repartirse
+       un espacio libre que acá no existe. */
+    flex: none;
   }
   .press-item__media {
     width: 100%;

@@ -152,8 +152,20 @@ body[data-preloading="true"] { overflow: hidden; height: 100vh; }
   justify-content: space-between;
   height: var(--nav-height);
   padding: 0 var(--container-padding);
+  /* border-radius queda SIEMPRE en 999px (ver comentario en .nav--floating
+     más abajo): así, al sumar/sacar esa clase durante el scroll, este valor
+     no cambia y el navegador no tiene que recalcular la máscara del blur
+     (backdrop-filter) en cada frame -- eso era lo que producía un glitch
+     visible de pintado (un "corte" horizontal a mitad del nav, con texto
+     de la página bajo el degradado que aparecía sin desenfocar de un lado
+     y sí del otro) apenas se activaba el modo isla flotante.
+     transform: translateZ(0) fuerza a que este elemento viva en su propia
+     capa de composición de forma estable durante toda la transición, en
+     vez de recrearla a mitad de camino -- la otra mitad del arreglo para
+     el mismo glitch. */
+  border-radius: 999px;
+  transform: translateZ(0);
   transition: background-color var(--duration-base) var(--ease-default),
-              border-radius var(--duration-base) var(--ease-default),
               margin var(--duration-base) var(--ease-default),
               padding var(--duration-base) var(--ease-default),
               max-width var(--duration-base) var(--ease-default);
@@ -197,17 +209,35 @@ body[data-preloading="true"] { overflow: hidden; height: 100vh; }
 .nav__links a:hover::after,
 .nav__links a[aria-current="page"]::after { right: 0; }
 
-/* Estado "isla flotante": se activa vía JS al hacer scroll en páginas largas */
+/* Estado "isla flotante": se activa vía JS al hacer scroll en páginas largas.
+   border-radius NO se repite acá -- ya vive fijo en .nav (ver ese comentario
+   más arriba).
+   OJO: este bloque tenía backdrop-filter: blur(14px) -- en la práctica (y
+   reproducido también acá) esa combinación de "elemento fixed + ancho casi
+   completo + blur" pinta mal en algunos navegadores/GPUs: la mitad del
+   nav (bajo el nombre de marca) queda sin el fondo oscuro aplicado, viendo
+   el contenido de la página crudo/a medio desenfocar, mientras la otra
+   mitad (bajo los links) sí se pinta bien -- se ve como un "corte" horizontal
+   feo a mitad del menú. En vez de perseguir esa combinación específica de
+   bug de blur, se saca el desenfoque y se sube la opacidad del fondo: sigue
+   viéndose como una píldora oscura flotante, pero al ser un color sólido
+   (sin backdrop-filter) no hay superficie que dependa de un recálculo de
+   blur por frame, así que no puede quedar a medio pintar. */
 .nav--floating {
   top: var(--space-3);
   margin: 0 auto;
   left: var(--container-padding);
   right: var(--container-padding);
   max-width: calc(100% - (var(--container-padding) * 2));
-  border-radius: 999px;
-  background: var(--overlay-strong);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* Píldora traslúcida (no sólida): opacidad bien baja para que el color de
+     la sección de atrás se intuya a través del fondo, en vez de un bloque
+     opaco tapando todo. Se mantiene el mismo tono gris carbón tibio (no
+     negro puro) para que, aun a esta opacidad, no se funda del todo con
+     secciones ya oscuras (ej. FOUNDERS) -- el borde sutil ayuda a marcar el
+     borde de la píldora en esos casos donde el contraste con el fondo es
+     mínimo. */
+  background: rgba(36, 32, 28, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 /* Nav sobre fondo claro (.nav--on-light, definida en el CSS de cada

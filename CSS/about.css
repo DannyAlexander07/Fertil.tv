@@ -1,0 +1,317 @@
+/* =========================================================================
+   FÉRTIL — about.css
+   4 secciones: (1) hero mostaza con el logo "Fértil" pegado (sticky) que
+   revela en blanco las letras de los párrafos a su paso (ver about.js);
+   (2) sección FOUNDERS con la imagen decorativa de letras sueltas;
+   (3) bios de los fundadores (fondo negro, ícono ilustrado detrás del
+   texto); (4) panel de cierre rosa con la firma grande de Fértil.
+   ========================================================================= */
+
+/* Nav sobre fondo claro: mismo comportamiento que Directors/Contact. */
+.nav--on-light { color: var(--color-ink); }
+.nav--on-light.nav--floating,
+.nav--floating.nav--on-light { color: var(--color-white); }
+
+/* ---------------------------------------------------------------------
+   1. HERO -- mostaza + logo "pegado" (fixed vía JS) con reveal de texto
+--------------------------------------------------------------------- */
+.about-hero {
+  /* Ancho del logo, en una sola variable: la usan tanto el slot (que
+     reserva su lugar en el flujo normal) como el propio logo cuando
+     about.js lo pone en modo "pegado" (position:fixed) -- así ambos
+     miden SIEMPRE lo mismo y el handoff entre uno y otro no da saltos. */
+  --about-logo-w: min(58vw, 780px);
+  background: var(--color-mostaza);
+  color: var(--color-ink);
+  overflow: clip; /* el logo centrado no debe generar scroll horizontal */
+}
+
+.about-hero__copy {
+  padding: calc(var(--nav-height) + var(--space-5)) var(--container-padding) 0;
+  display: flex;
+  flex-direction: column;
+  /* Centra la columna de párrafos en el ancho de la pantalla -- misma
+     lógica horizontal que el logo (también centrado), para que el cruce
+     entre ambos quede parejo en vez de a un costado. */
+  align-items: center;
+}
+
+.about-hero__lede {
+  /* Contenedor bien ancho -- que entre más texto por línea, como en la
+     referencia (menos líneas cortadas, párrafo más "compacto" en alto). */
+  max-width: min(90vw, 960px);
+  width: 100%;
+  font-family: var(--font-serif);
+  font-weight: 560;
+  /* Un poco más grande, para quedar proporcionado con el resto del sitio
+     (Directors/Contact/Press usan clamps de tamaño similar). */
+  font-size: clamp(20px, 2.4vw, 32px);
+  line-height: 1.35;
+  text-align: justify;
+}
+
+/* Espaciado vertical entre párrafos: mientras el logo está "pegado"
+   (fixed, centrado en pantalla, ver about.js) el texto sigue el scroll
+   normal por detrás. Por eso el 1er párrafo no puede arrancar pegado al
+   top del contenedor (ahí el logo todavía no lo alcanzó y nunca lo
+   alcanzaría bajando el scroll): tiene que arrancar por DEBAJO de la
+   franja donde vive el logo, para que al scrollear hacia abajo el texto
+   suba y recién ahí lo cruce. */
+.about-hero__lede:nth-child(1) { margin-top: 44vh; }
+.about-hero__lede:nth-child(2) { margin-top: var(--space-5); }
+.about-hero__lede:nth-child(3) { margin-top: 26vh; }
+
+/* Texto "fantasma": copia idéntica al párrafo base, pero en un tono
+   blanquecino, recortada (mask) con un bloque RECTANGULAR del mismo
+   tamaño/posición que el logo en cada instante del scroll (about.js
+   actualiza --reveal-mask-pos/--reveal-mask-size cada frame). OJO: el
+   mask NO usa la silueta real del logo (sus letras/huecos) -- si se usa
+   esa silueta, sólo se revela texto blanco en los pedacitos que caen
+   justo sobre tinta del logo, dejando partes del texto sin revelar aun
+   estando "debajo" del logo (parches, no un bloque parejo). Con un
+   rectángulo sólido como máscara, TODO el texto que cae dentro del
+   rectángulo del logo se revela en blanco parejo. */
+.reveal-text { position: relative; }
+
+.reveal-text__ghost {
+  position: absolute;
+  inset: 0;
+  /* Tiene que pintarse POR ENCIMA del logo (z-index:3 en .about-hero__logo
+     cuando está en modo .is-pinned, ver más abajo): si no, el logo --
+     opaco -- taparía el texto entero donde se superponen y el "fantasma"
+     quedaría siempre oculto debajo suyo, sin efecto visible. */
+  z-index: 4;
+  color: #f5ecdc;
+  -webkit-mask-image: linear-gradient(#000, #000);
+  mask-image: linear-gradient(#000, #000);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: var(--reveal-mask-pos, -9999px -9999px);
+  mask-position: var(--reveal-mask-pos, -9999px -9999px);
+  -webkit-mask-size: var(--reveal-mask-size, 0 0);
+  mask-size: var(--reveal-mask-size, 0 0);
+}
+
+/* Slot del logo: reserva SIEMPRE su lugar en el flujo normal del
+   documento (mismo ancho/alto que el logo), esté éste en modo fijo o no
+   -- así el resto de la página (fila de íconos, secciones siguientes)
+   nunca "salta" cuando about.js cambia el logo de modo. */
+.about-hero__logo-slot {
+  width: var(--about-logo-w);
+  aspect-ratio: 1330 / 324; /* proporción real del PNG del isotipo */
+  /* OJO: el espacio antes de la fila de íconos va como margin-bottom, NUNCA
+     padding-bottom -- con box-sizing:border-box (global, ver style.css) un
+     padding acá se restaría de la caja que ya fija aspect-ratio, achicando
+     la altura real disponible para la imagen (quedaba en la mitad de lo
+     debido) sin que aspect-ratio se enterara. margin no cuenta para ese
+     cálculo, así que no lo afecta. */
+  margin: 0 auto var(--space-7);
+}
+
+.about-hero__logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1330 / 324; /* misma proporción que el slot: evita depender
+    de height:100% (percentage-height), que no siempre resuelve bien
+    contra una altura de padre calculada vía aspect-ratio. */
+}
+
+/* Modo "pegado": about.js suma esta clase mientras el slot (su posición
+   NATURAL en el documento) todavía no llegó al centro de la pantalla --
+   el logo se ve fijo ahí, centrado, mientras el texto de atrás sigue el
+   scroll normal. Apenas el scroll trae al slot hasta ese mismo punto,
+   about.js saca la clase: el logo pasa a su posición normal de flujo
+   (dentro del slot), que en ese instante coincide exactamente con donde
+   ya estaba -- sin salto ni segunda copia del logo. */
+.about-hero__logo.is-pinned {
+  position: fixed;
+  /* Más arriba del centro exacto de la pantalla (33% en vez de 50%) --
+     about.js usa ese mismo 33% para decidir cuándo "soltarlo", así el
+     handoff con el logo en flujo normal (about-hero__logo-slot) sigue
+     coincidiendo exactamente, sin salto. */
+  top: 33%;
+  left: 50%;
+  width: var(--about-logo-w);
+  height: auto;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.about-hero__icons-row {
+  display: flex;
+  justify-content: center;
+  padding: 0 var(--container-padding) var(--space-7);
+}
+.about-hero__icons-row img {
+  width: min(60vw, 480px);
+  height: auto;
+}
+
+/* ---------------------------------------------------------------------
+   2. FOUNDERS -- título decorativo (letras sueltas), fondo negro
+--------------------------------------------------------------------- */
+.about-founders-title {
+  background: var(--color-black);
+  display: flex;
+  justify-content: center;
+  padding: var(--space-7) var(--container-padding);
+}
+.about-founders-title img {
+  width: min(100%, 1200px);
+  height: auto;
+}
+
+/* ---------------------------------------------------------------------
+   3. FOUNDERS -- bios
+--------------------------------------------------------------------- */
+.about-founder-list {
+  background: var(--color-black);
+  color: var(--color-white);
+  padding: 0 var(--container-padding) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.founder {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  max-width: 1360px;
+  margin: 0 auto;
+}
+.founder--santiago { flex-direction: row-reverse; }
+
+.founder__media {
+  flex: 0 0 320px;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: #111;
+}
+.founder__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.founder__copy {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--space-6) 0;
+}
+
+/* Ícono ilustrado del fundador, de fondo detrás de su propio texto --
+   grande y en baja opacidad para que no compita con la lectura. */
+.founder__icon {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 320px;
+  height: auto;
+  opacity: 0.14;
+  z-index: 0;
+  pointer-events: none;
+}
+.founder--santiago .founder__icon { right: auto; left: 0; }
+
+.founder__name,
+.founder__role,
+.founder__bio { position: relative; z-index: 1; }
+
+.founder__name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: clamp(20px, 2.2vw, 28px);
+}
+
+.founder__role {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  opacity: 0.7;
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.founder__bio {
+  font-family: var(--font-ui);
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.65;
+  opacity: 0.85;
+  max-width: 52ch;
+}
+
+/* ---------------------------------------------------------------------
+   4. CIERRE -- panel rosa con firma grande
+--------------------------------------------------------------------- */
+.about-close {
+  background: var(--color-pink);
+  color: var(--color-ink);
+  padding: var(--space-7) var(--container-padding) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.about-close__signature {
+  width: min(46vw, 520px);
+  height: auto;
+  margin-bottom: var(--space-7);
+}
+
+.about-close .page-footer {
+  width: 100%;
+  max-width: 1360px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.about-close .social-row a {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+}
+.about-close .social-row a:hover {
+  background: none;
+  transform: translateY(-2px);
+}
+.about-close .social-row img {
+  width: 30px;
+  height: auto;
+  display: block;
+}
+
+.about-close__email {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+
+.about-close .isotype-mark {
+  width: 40px;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .founder,
+  .founder--santiago {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-5);
+  }
+  .founder__media { flex: none; width: 100%; aspect-ratio: 4 / 3; }
+  .founder__icon { display: none; }
+}
+
+@media (max-width: 768px) {
+  .about-hero { --about-logo-w: min(78vw, 420px); }
+  .about-hero__lede { font-size: clamp(17px, 4.6vw, 22px); max-width: none; }
+  .about-close__signature { width: min(70vw, 320px); }
+}

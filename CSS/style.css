@@ -70,6 +70,10 @@
   /* Layout */
   --container-padding: 48px;
   --nav-height: 92px;
+  /* Barra flotante (.nav--floating, ver más abajo): más baja que la barra
+     de reposo -- se pidió menos altura al pasar a modo isla/flotante (luego
+     se subió un poco desde 64px porque quedaba demasiado baja). */
+  --nav-height-floating: 76px;
 
   /* Movimiento */
   --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
@@ -88,6 +92,7 @@
   :root {
     --container-padding: 20px;
     --nav-height: 64px;
+    --nav-height-floating: 60px;
   }
 }
 
@@ -210,26 +215,36 @@ body[data-preloading="true"] { overflow: hidden; height: 100vh; }
 .nav__links a[aria-current="page"]::after { right: 0; }
 
 /* Estado "isla flotante": se activa vía JS al hacer scroll en páginas largas.
-   border-radius NO se repite acá -- ya vive fijo en .nav (ver ese comentario
-   más arriba).
-   OJO: este bloque tenía backdrop-filter: blur(14px) -- en la práctica (y
-   reproducido también acá) esa combinación de "elemento fixed + ancho casi
-   completo + blur" pinta mal en algunos navegadores/GPUs: la mitad del
-   nav (bajo el nombre de marca) queda sin el fondo oscuro aplicado, viendo
-   el contenido de la página crudo/a medio desenfocar, mientras la otra
-   mitad (bajo los links) sí se pinta bien -- se ve como un "corte" horizontal
-   feo a mitad del menú. En vez de perseguir esa combinación específica de
-   bug de blur, se saca el desenfoque y se sube la opacidad del fondo: sigue
-   viéndose como una píldora oscura flotante, pero al ser un color sólido
-   (sin backdrop-filter) no hay superficie que dependa de un recálculo de
-   blur por frame, así que no puede quedar a medio pintar. */
+   Barra de ancho COMPLETO (edge-to-edge, sin márgenes ni esquinas
+   redondeadas -- por eso border-radius:0 acá, pisando el 999px de .nav),
+   más baja que la barra de reposo, con blur real (backdrop-filter) para que
+   se note como un "difuminado" del contenido que pasa por detrás en vez de
+   una píldora opaca flotando encima.
+   OJO -- historial de este bloque: antes tenía backdrop-filter:blur(14px)
+   en una píldora angosta con esquinas redondeadas (inset, ancho casi
+   completo) y eso pintaba mal en algunos navegadores/GPUs (un "corte"
+   horizontal a mitad del nav, mitad desenfocada y mitad no). En ese momento
+   se sacó el blur por un color sólido para evitar el bug. Ahora se prueba
+   de nuevo con blur, pero en una condición distinta: ancho 100% real (no
+   "casi completo") y sin border-radius (sin máscara redondeada que
+   recalcular) -- combinación que en las pruebas de este cambio (varios
+   anchos de pantalla, scroll rápido y lento) ya NO reprodujo el glitch. Si
+   en el navegador real llegara a reaparecer el corte, hay que volver a un
+   fondo sólido sin backdrop-filter (ver git history de este bloque) en vez
+   de perseguir el blur. */
 .nav--floating {
-  top: var(--space-3);
-  margin: 0 auto;
-  left: var(--container-padding);
-  right: var(--container-padding);
-  max-width: calc(100% - (var(--container-padding) * 2));
-  background: rgba(10, 10, 10, 0.92);
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  max-width: 100%;
+  height: var(--nav-height-floating);
+  border-radius: 0;
+  background: rgba(36, 32, 28, 0.55);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* Nav sobre fondo claro (.nav--on-light, definida en el CSS de cada
