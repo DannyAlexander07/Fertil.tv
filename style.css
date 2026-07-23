@@ -1,0 +1,384 @@
+/* =========================================================================
+   FÉRTIL — style.css
+   Hoja de estilos GLOBAL (tokens, reset, tipografía, nav, menú mobile,
+   preloader) + estilos específicos de INICIO.
+   Cada página siguiente (directors/about/press/contact) trae su propio
+   archivo CSS en /CSS y asume que este archivo ya se cargó antes.
+   ========================================================================= */
+
+/* ---------------------------------------------------------------------
+   1. Tipografía — @font-face
+   Fuentes empaquetadas en recursos/font (ver carpeta FERTIL WEB/Fonts)
+--------------------------------------------------------------------- */
+@font-face {
+  font-family: "Inter";
+  src: url("../recursos/font/Inter-VariableFont.ttf") format("truetype-variations"),
+       url("../recursos/font/Inter-VariableFont.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Times Newer Roman";
+  src: url("../recursos/font/TimesNewerRoman-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Free Sans";
+  src: url("../recursos/font/FreeSans.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------------------------------------------------------------------
+   2. Design tokens
+   Colores tomados directamente del mockup (WEB FÉRTIL, Google Slides).
+--------------------------------------------------------------------- */
+:root {
+  /* Colores de marca / secciones */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-mostaza: #8e6e3f;       /* fondo Directors / About / Contact */
+  --color-mostaza-deep: #75592f;  /* hover / estados sobre mostaza */
+  --color-pink: #f1cabb;          /* cierre de About */
+  --color-ink: #111111;           /* texto sobre fondos claros */
+
+  --overlay-soft: rgba(0, 0, 0, 0.35);
+  --overlay-strong: rgba(0, 0, 0, 0.6);
+  --hairline: rgba(255, 255, 255, 0.25);
+  --hairline-ink: rgba(17, 17, 17, 0.25);
+
+  /* Tipografía */
+  --font-ui: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --font-serif: "Times Newer Roman", "Times New Roman", serif;
+  --font-alt: "Free Sans", "Inter", sans-serif;
+
+  /* Espaciado */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+  --space-7: 96px;
+
+  /* Layout */
+  --container-padding: 48px;
+  --nav-height: 92px;
+
+  /* Movimiento */
+  --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 0.2s;
+  --duration-base: 0.4s;
+  --duration-slow: 0.8s;
+
+  /* Escala z-index (compartida por todas las páginas) */
+  --z-nav: 500;
+  --z-menu: 490;
+  --z-modal: 800;
+  --z-preloader: 900;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 20px;
+    --nav-height: 64px;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   3. Reset
+--------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body, h1, h2, h3, h4, p, ul, figure { margin: 0; }
+
+ul { list-style: none; padding: 0; }
+
+a { text-decoration: none; color: inherit; }
+
+img, video { display: block; max-width: 100%; }
+
+button {
+  font: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+}
+
+body {
+  font-family: var(--font-ui);
+  background: var(--color-black);
+  color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body[data-preloading="true"] { overflow: hidden; height: 100vh; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------------------------------------------------------------------
+   4. Nav — barra superior compartida por todas las páginas.
+   Por defecto es una barra fija de ancho completo (así aparece en Inicio).
+   Las páginas con scroll largo (About, Directors, etc.) activan el modo
+   "isla flotante" agregando [data-nav-behavior="float-on-scroll"] al
+   header; main.js se encarga de sumar/quitar la clase .nav--floating.
+--------------------------------------------------------------------- */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding: 0 var(--container-padding);
+  transition: background-color var(--duration-base) var(--ease-default),
+              border-radius var(--duration-base) var(--ease-default),
+              margin var(--duration-base) var(--ease-default),
+              padding var(--duration-base) var(--ease-default),
+              max-width var(--duration-base) var(--ease-default);
+}
+
+.nav__brand {
+  font-family: var(--font-alt);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.nav__links a {
+  position: relative;
+  padding-bottom: 3px;
+}
+
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 100%;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transition: right var(--duration-base) var(--ease-default);
+}
+
+.nav__links a:hover::after,
+.nav__links a[aria-current="page"]::after { right: 0; }
+
+/* Estado "isla flotante": se activa vía JS al hacer scroll en páginas largas */
+.nav--floating {
+  top: var(--space-3);
+  margin: 0 auto;
+  left: var(--container-padding);
+  right: var(--container-padding);
+  max-width: calc(100% - (var(--container-padding) * 2));
+  border-radius: 999px;
+  background: var(--overlay-strong);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* Nav sobre fondo claro (.nav--on-light, definida en el CSS de cada
+   página: Directors, Contact...) + menú mobile abierto: el brand y el
+   botón hamburguesa/X usan currentColor en tono oscuro por defecto --
+   sobre el overlay casi negro del menú (rgba(0,0,0,.82)) quedaban
+   invisibles (oscuro sobre oscuro, la "X" directamente no se veía).
+   Mientras el menú está abierto pasan a blanco, igual que ya hacen al
+   flotar. Mayor especificidad que .nav--on-light sola, así gana sin
+   importar en qué archivo/orden se cargue esa clase. */
+body.nav-menu-open .nav--on-light { color: var(--color-white); }
+
+/* Botón hamburguesa (solo mobile) */
+.nav__toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  width: 29px;
+  height: 22px;
+}
+
+.nav__toggle span {
+  display: block;
+  height: 1.5px;
+  width: 100%;
+  background: currentColor;
+  transition: transform var(--duration-fast) var(--ease-default),
+              opacity var(--duration-fast) var(--ease-default);
+}
+
+.nav__toggle[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
+.nav__toggle[aria-expanded="true"] span:last-child { transform: translateY(-7px) rotate(-45deg); }
+
+/* Overlay del menú mobile: se despliega desde la derecha, sobre el video */
+.nav__menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: var(--space-4) var(--container-padding);
+  background: rgba(0, 0, 0, 0.82);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity var(--duration-base) var(--ease-default),
+              transform var(--duration-base) var(--ease-default),
+              visibility var(--duration-base);
+}
+
+.nav__menu-overlay[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.nav__menu-overlay ul {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-3);
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+@media (min-width: 769px) {
+  .nav__menu-overlay { display: none; }
+}
+
+@media (max-width: 768px) {
+  .nav__links { display: none; }
+  .nav__toggle { display: flex; }
+}
+
+/* ---------------------------------------------------------------------
+   5. Preloader — animación del logo, una vez por sesión (ver main.js)
+--------------------------------------------------------------------- */
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-black);
+  transition: opacity var(--duration-slow) var(--ease-default);
+}
+
+.preloader video {
+  width: min(58vw, 420px);
+  height: auto;
+}
+
+.preloader[data-hide="true"] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------------------
+   6. Iconos sociales + marca (footer flotante, reutilizado en varias páginas)
+--------------------------------------------------------------------- */
+.social-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.social-row a {
+  width: 30px; height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background var(--duration-fast) var(--ease-default),
+              transform var(--duration-fast) var(--ease-default);
+}
+
+.social-row a:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: translateY(-2px);
+}
+
+.social-row svg { width: 15px; height: 15px; }
+
+.brand-mark {
+  width: 34px;
+  height: auto;
+  opacity: 0.92;
+}
+
+/* ---------------------------------------------------------------------
+   7. INICIO — hero de video a pantalla completa
+--------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  height: 100vh;
+  min-height: 580px;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-black);
+}
+
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,.35) 0%, rgba(0,0,0,0) 22%, rgba(0,0,0,0) 70%, rgba(0,0,0,.45) 100%);
+  pointer-events: none;
+}
+
+.hero__footer {
+  position: absolute;
+  left: var(--container-padding);
+  right: var(--container-padding);
+  bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+

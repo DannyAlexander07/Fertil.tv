@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Fértil</title>
+  <meta name="description" content="Contacto de Fértil: escribinos directamente al equipo de producción.">
+  <link rel="stylesheet" href="../CSS/style.css">
+  <link rel="stylesheet" href="../CSS/contact.css">
+</head>
+<body class="contact-page">
+
+  <!-- Nav: mismo comportamiento que Directors (píldora flotante oscura al hacer scroll, texto oscuro por defecto sobre el mostaza) -->
+  <header class="nav nav--on-light" data-nav data-nav-behavior="float-on-scroll">
+    <a class="nav__brand" href="../index.html">In Craft We Trust</a>
+
+    <nav class="nav__links" aria-label="Navegación principal">
+      <a href="../pages/directors.html">Directors</a>
+      <a href="../pages/press.html">Press</a>
+      <a href="../pages/about.html">About</a>
+      <a href="../pages/contact.html" aria-current="page">Contact</a>
+    </nav>
+
+    <button class="nav__toggle" data-nav-toggle aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <div class="nav__menu-overlay" id="mobile-menu" data-nav-overlay data-open="false">
+    <ul>
+      <li><a href="../pages/directors.html">Directors</a></li>
+      <li><a href="../pages/press.html">Press</a></li>
+      <li><a href="../pages/about.html">About</a></li>
+      <li><a href="../pages/contact.html" aria-current="page">Contact</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <section class="contact-hero">
+      <div class="contact-hero__inner">
+        <h1 class="contact-hero__label">Contact</h1>
+
+        <ul class="contact-list">
+          <li class="contact-item">
+            <img class="contact-item__icon" src="../recursos/icons/isotype-hand.png" alt="">
+            <div class="contact-item__info">
+              <h2 class="contact-item__name">Tarek Pérez Alvarado</h2>
+              <p class="contact-item__role">CEO</p>
+              <a class="contact-item__email" href="mailto:tarek@fertil.tv">tarek@fertil.tv</a>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <img class="contact-item__icon" src="../recursos/icons/icono-contacto-sol.png" alt="">
+            <div class="contact-item__info">
+              <h2 class="contact-item__name">Sol García Noblecilla</h2>
+              <p class="contact-item__role">Productorx ejecutivx</p>
+              <a class="contact-item__email" href="mailto:sol@fertil.tv">sol@fertil.tv</a>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <img class="contact-item__icon" src="../recursos/icons/icono-contacto-dianne.png" alt="">
+            <div class="contact-item__info">
+              <h2 class="contact-item__name">Dianne Rivera</h2>
+              <p class="contact-item__role">Supervisora de post producción</p>
+              <a class="contact-item__email" href="mailto:dianne@fertil.tv">dianne@fertil.tv</a>
+            </div>
+          </li>
+
+          <li class="contact-item">
+            <img class="contact-item__icon" src="../recursos/icons/icono-contacto-fania.png" alt="">
+            <div class="contact-item__info">
+              <h2 class="contact-item__name">Fania Vásquez</h2>
+              <p class="contact-item__role">Directora de administración</p>
+              <a class="contact-item__email" href="mailto:fania@fertil.tv">fania@fertil.tv</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="page-footer">
+        <div class="social-row">
+          <a href="https://www.instagram.com/fertil.tv/" target="_blank" rel="noopener" aria-label="Instagram de Fértil">
+            <img src="../recursos/icons/instagram.png" alt="">
+          </a>
+          <a href="https://www.linkedin.com/company/fertil/" target="_blank" rel="noopener" aria-label="LinkedIn de Fértil">
+            <img src="../recursos/icons/linkedin.png" alt="">
+          </a>
+        </div>
+        <img class="isotype-mark" src="../recursos/icons/icono-contacto-tarek.png" alt="" aria-hidden="true">
+      </div>
+    </section>
+  </main>
+
+  <script src="../JS/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+{
+  "directors": [
+    {
+      "slug": "santi-chavez",
+      "name": "Santi Chávez",
+      "reelUrl": "https://simian.me/maxou",
+      "previewImage": "recursos/img/directors/santi-chavez/preview.jpg",
+      "videos": [
+        {
+          "title": "BCP - Crecer",
+          "thumb": "recursos/img/directors/santi-chavez/01.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/qZqzYGOFOmgQ_M7ks5_mVw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "TECHO - Gira una llave",
+          "thumb": "recursos/img/directors/santi-chavez/02.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/Xet5fGo879Rov-ufuCtdpQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Aruba - Aquí y ahora",
+          "thumb": "recursos/img/directors/santi-chavez/03.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/kjkH4Wcj0ZxoxagKgapEEw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Imperial - Frescura",
+          "thumb": "recursos/img/directors/santi-chavez/04.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/8QHjUD3DeVcJJ-u0PQVdyw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Yape - Team yape",
+          "thumb": "recursos/img/directors/santi-chavez/05.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/4tbGmA0yDq8zPIiAeUYrgQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "BBVA - Plin BB",
+          "thumb": "recursos/img/directors/santi-chavez/06.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/bd9y9rGA2-lbVbdn7cDg8A/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Hochschild",
+          "thumb": "recursos/img/directors/santi-chavez/07.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/EqOjrE5ZHWtyl5QL0Na3Ow/false/auto/auto/0B2C3A/000000/true"
+        }
+      ]
+    },
+    {
+      "slug": "franco-finocchiaro",
+      "name": "Franco Finocchiaro",
+      "reelUrl": "https://simian.me/mb8si",
+      "previewImage": "recursos/img/directors/franco-finocchiaro/preview.jpg",
+      "videos": [
+        {
+          "title": "BCP - Voto informado",
+          "thumb": "recursos/img/directors/franco-finocchiaro/01.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/enKtQ0Lloq-4kg24xgXjWA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "BCP - Circo del Cuy Mágico",
+          "thumb": "recursos/img/directors/franco-finocchiaro/02.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/PJ2_NLHNctTq9qF_bdZ4sw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Win - Contrato Tóxico",
+          "thumb": "recursos/img/directors/franco-finocchiaro/03.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/w-rGfrMNXK6FzerXrj0AMg/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Caja Arequipa - Una Historia de Crecimiento",
+          "thumb": "recursos/img/directors/franco-finocchiaro/04.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/RuKPrQP98yuVocsj3dHbNA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Walon - Negados",
+          "thumb": "recursos/img/directors/franco-finocchiaro/05.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/achXCjBND2Y4XqGGBi4THQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "ISIL - A mi Manera",
+          "thumb": "recursos/img/directors/franco-finocchiaro/06.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/rdy2gId3FSgosNpmWjLaJQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Sublime - Métele Chocolate",
+          "thumb": "recursos/img/directors/franco-finocchiaro/07.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/w0C0w8Xisjr86fKMMnlVdA/false/auto/auto/0B2C3A/000000/true"
+        }
+      ]
+    },
+    {
+      "slug": "florian",
+      "name": "Florian",
+      "reelUrl": "https://simian.me/GtQV_Fertil_Florian",
+      "previewImage": "recursos/img/directors/florian/preview.jpg",
+      "videos": [
+        {
+          "title": "Samsung",
+          "thumb": "recursos/img/directors/florian/01.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/0TM2HTBuyGfKNTaHRGUjSw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "AT&T - Llamadas Perdidas",
+          "thumb": "recursos/img/directors/florian/06.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/n0LFcwPS9X72xQRkpvugzw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Dr. Lemon - Un Amigo",
+          "thumb": "recursos/img/directors/florian/05.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/Txp_lRFQVznFMiMS38rMOQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "DDP - Oficina",
+          "thumb": "recursos/img/directors/florian/02.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/onb2fW-rCs6F5CLWjDsFIA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Santander - Corredores de las 3pm",
+          "thumb": "recursos/img/directors/florian/03.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/uJMlECo1DVmY3auDZ3uXsQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Aerolíneas Argentinas - Bautismo",
+          "thumb": "recursos/img/directors/florian/04.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/AqWmP1cLXTw6gGCKk_QylA/false/auto/auto/0B2C3A/000000/true"
+        }
+      ]
+    },
+    {
+      "slug": "alvaro-luque",
+      "name": "Alvaro Luque",
+      "reelUrl": "https://simian.me/cc9ak",
+      "previewImage": "recursos/img/directors/alvaro-luque/04.jpg",
+      "videos": [
+        {
+          "title": "Pepsi - HuancaBurger",
+          "thumb": "recursos/img/directors/alvaro-luque/01.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/daXJd8TN5odqqHASFkuzJw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Mastercard - Victor Benitéz",
+          "thumb": "recursos/img/directors/alvaro-luque/02.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/a_WtuBzK0-z6ncv830k4Bg/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "BCP - Voto Informado",
+          "thumb": "recursos/img/directors/alvaro-luque/03.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/8jrTLSXlWTJtk7HsVm7NLg/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "La Danza de los Mirlos - Trailer",
+          "thumb": "recursos/img/directors/alvaro-luque/04.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/zn1OcYgeNWRSHqN9-Ymojg/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Old Times",
+          "thumb": "recursos/img/directors/alvaro-luque/05.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/agPXRdGNYFEeg00hZHvlmw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Sodimac - Resting House Billboard",
+          "thumb": "recursos/img/directors/alvaro-luque/06.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/f3MgquJc89JZFXfUxVEs-w/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Promperu - Más Peruano que la Chicha",
+          "thumb": "recursos/img/directors/alvaro-luque/07.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/r-tNgetkK0H_i_1da3eONQ/false/auto/auto/0B2C3A/000000/true"
+        }
+      ]
+    },
+    {
+      "slug": "julian-fernandez",
+      "name": "Julian Fernandez",
+      "reelUrl": "https://simian.me/qfg6u",
+      "previewImage": "recursos/img/directors/julian-fernandez/04.jpg",
+      "videos": [
+        {
+          "title": "Chunky - Ascensor",
+          "thumb": "recursos/img/directors/julian-fernandez/01.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/iDdpojQypYf4YsqqFl1Xdw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Mercado Libre - Cristo",
+          "thumb": "recursos/img/directors/julian-fernandez/02.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/7w52-uK-KwO2eWCfwCEDjQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Gloria - Panetón",
+          "thumb": "recursos/img/directors/julian-fernandez/03.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/fdQaDNVceuLYzuAgd77ANA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Tinka - El dinero no compra la felicidad",
+          "thumb": "recursos/img/directors/julian-fernandez/04.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/G0bOBYgsUGX-v3upJynzdA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Philco - Euthanasia",
+          "thumb": "recursos/img/directors/julian-fernandez/05.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/-q-nJk-MzyUmkAPIljAdAw/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Chubb - Manifiesto",
+          "thumb": "recursos/img/directors/julian-fernandez/06.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/xeGDTsJF5vBqu-o8rv5gtA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "KFC - Gamer",
+          "thumb": "recursos/img/directors/julian-fernandez/07.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/m-gW5HkJcJDTh1vFpWzaSQ/false/auto/auto/0B2C3A/000000/true"
+        }
+      ]
+    },
+    {
+      "slug": "milton-kremer",
+      "name": "Milton Kremer",
+      "reelUrl": "https://simian.me/FtYU_Milton_Kremer",
+      "previewImage": "recursos/img/directors/milton-kremer/04.jpg",
+      "videos": [
+        {
+          "title": "Amstel - Aplausos",
+          "thumb": "recursos/img/directors/milton-kremer/01.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/Uo4V2eKykczIHuuBoKphuA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Samsung - Fear",
+          "thumb": "recursos/img/directors/milton-kremer/02.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/oAZn4GcJPLsUnc48asMXhQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Burger King - Oumph",
+          "thumb": "recursos/img/directors/milton-kremer/03.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/Q2hAUR4RmDS9dvxDxVsLpQ/false/auto/auto/0B2C3A/000000/true",
+          "aspectRatio": "4 / 3"
+        },
+        {
+          "title": "Andes - Hagglers",
+          "thumb": "recursos/img/directors/milton-kremer/04.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/WDaN6JTmIK2rWqliWailIQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "KFC - Sharingo",
+          "thumb": "recursos/img/directors/milton-kremer/05.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/FGpxQV4yUKRwsG1ipv55KQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Al Mundo - Landia",
+          "thumb": "recursos/img/directors/milton-kremer/06.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/ey3q84VLZySqfBkFryj-iA/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "Sprite - Refreshing Truths Freedom",
+          "thumb": "recursos/img/directors/milton-kremer/07.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/x_X6b_zu94JqrByy1KCzBw/false/auto/auto/0B2C3A/000000/true"
+        }
+      ]
+    },
+    {
+      "slug": "andrea-martinez-mares",
+      "name": "Andrea Martínez Mares",
+      "reelUrl": "https://simian.me/dly9u",
+      "previewImage": "recursos/img/directors/andrea-martinez-mares/05.jpg",
+      "videos": [
+        {
+          "title": "Nike Toma x Palida Studios",
+          "thumb": "recursos/img/directors/andrea-martinez-mares/01.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/sHWmiV-9BAUlH9RrJb4jHQ/false/auto/auto/0B2C3A/000000/true",
+          "aspectRatio": "4 / 3"
+        },
+        {
+          "title": "El Gesto - Fashion Film",
+          "thumb": "recursos/img/directors/andrea-martinez-mares/02.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/i4pZCbk5ndCv24qHfV37tw/false/auto/auto/0B2C3A/000000/true",
+          "aspectRatio": "100 / 52.73438"
+        },
+        {
+          "title": "Eunoia - Fashion Film",
+          "thumb": "recursos/img/directors/andrea-martinez-mares/03.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/zWuDZzE4xxHiRgAODyCtuQ/false/auto/auto/0B2C3A/000000/true"
+        },
+        {
+          "title": "HER - Fashion Film",
+          "thumb": "recursos/img/directors/andrea-martinez-mares/04.jpg",
+          "reelUrl": "https://fertil.gosimian.com/share/v/__uTjsaKzYq-P7IopCyJnw/false/auto/auto/0B2C3A/000000/true"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,522 @@
+/* =========================================================================
+   FÉRTIL — directors.css
+   Página dinámica de Directors (listado + detalle por director + modal de
+   video). Depende de los tokens/reset/nav/menú ya definidos en style.css.
+   ========================================================================= */
+
+body.directors-page {
+  background: var(--color-mostaza);
+  overflow-x: hidden;
+}
+
+/* [hidden] debe ganarle siempre a display:flex/grid de estas secciones;
+   si no, el navegador sigue pintando (y recibiendo clicks en) elementos
+   que deberían estar completamente fuera de circulación. */
+.directors-list[hidden],
+.director-detail[hidden],
+.video-modal[hidden] {
+  display: none;
+}
+
+/* Nav sobre fondos claros (mostaza / blanco): texto oscuro por defecto.
+   Cuando flota (scroll) vuelve a ser una píldora oscura -> texto blanco. */
+.nav--on-light { color: var(--color-ink); }
+.nav--on-light.nav--floating,
+.nav--floating.nav--on-light { color: var(--color-white); }
+
+/* Mientras se previsualiza el fondo de un director en el listado, el nav
+   (fixed, fuera de la sección) también pasa a texto blanco para mantener
+   contraste sobre la imagen oscurecida. */
+body.preview-active .nav--on-light:not(.nav--floating) { color: var(--color-white); }
+
+/* ---------------------------------------------------------------------
+   Footer reutilizado en ambas vistas (listado + detalle)
+--------------------------------------------------------------------- */
+.page-footer {
+  position: absolute;
+  left: var(--container-padding);
+  right: var(--container-padding);
+  bottom: var(--space-4);
+  /* Grid de 3 columnas (en vez de flex + space-between): con las columnas
+     laterales en 1fr, la columna del medio (auto) queda SIEMPRE centrada
+     en el eje real del contenedor, sin importar que redes-sociales e
+     isotipo tengan anchos distintos -- así "Fértil" queda alineado con
+     el nombre del director, que también está centrado en toda la sección.
+     align-items: end alinea todo a una misma base, en vez de quedar
+     centrado verticalmente (donde los íconos chicos flotaban a la mitad
+     de la firma, mucho más alta). */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  z-index: 2;
+}
+
+/* grid-column explícito: en el listado (VISTA A) no hay firma en el medio
+   -- sin esto, el isotipo "saltaría" a la columna 2 por auto-placement y
+   dejaría de estar pegado a la esquina derecha. */
+.social-row { grid-column: 1; justify-self: start; }
+.signature-mark { grid-column: 2; justify-self: center; }
+.isotype-mark { grid-column: 3; justify-self: end; }
+
+.isotype-mark { width: 50px; height: auto; }
+
+.signature-mark {
+  width: 130px;
+  height: auto;
+}
+
+/* Los íconos exportados (recursos/icons) ya traen su propia forma —
+   Instagram y LinkedIn no necesitan un círculo/fondo extra detrás. */
+.directors-page .social-row a {
+  width: auto;
+  height: auto;
+  background: none;
+  border-radius: 0;
+}
+.directors-page .social-row a:hover {
+  background: none;
+  transform: translateY(-2px);
+}
+.directors-page .social-row img {
+  width: 32px;
+  height: auto;
+  display: block;
+}
+
+/* Los íconos son oscuros; al previsualizar un director (fondo oscurecido
+   por su foto) se invierten a blanco para seguir viéndose. */
+body.preview-active .directors-list .social-row img,
+body.preview-active .directors-list .isotype-mark {
+  filter: invert(1);
+}
+
+/* =========================================================================
+   VISTA A — Listado de directores (fondo mostaza + preview dinámico)
+   ========================================================================= */
+.directors-list {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-ink);
+  overflow: hidden;
+}
+
+.directors-list__bg {
+  /* Full-bleed para todos los directores por defecto; Florian es la
+     excepción explícita (ver bloque de abajo), porque su video fuente
+     (Samsung) trae su propio pillarbox -- barras oscuras a los lados. */
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-default);
+}
+.directors-list__bg.is-visible { opacity: 1; }
+
+.directors-list__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-default);
+}
+.directors-list.has-preview .directors-list__scrim { opacity: 1; }
+.directors-list.has-preview { color: var(--color-white); }
+
+/* Florian: única excepción -- la foto solo debe llegar en ancho hasta la
+   mitad de la palabra "CONTACT" del nav (medido con el nav real: 92px
+   fijos desde cada borde, ya que el nav usa container-padding fijo en px,
+   no fluido -- por eso es un valor en px y no en %, se mantiene igual en
+   cualquier ancho de pantalla). El alto sigue cubriendo completo (no se
+   toca top/bottom). Los laterales que quedan afuera se completan con un
+   tono oscuro de fondo en vez de mostaza. */
+.directors-list[data-preview-slug="florian"] { background: var(--color-black); }
+.directors-list[data-preview-slug="florian"] .directors-list__bg,
+.directors-list[data-preview-slug="florian"] .directors-list__scrim {
+  left: 92px;
+  right: 92px;
+}
+
+@media (max-width: 768px) {
+  /* En mobile el nav no muestra "CONTACT" (queda oculto tras el botón
+     hamburguesa), así que esa referencia no aplica -- Florian vuelve a
+     full-bleed como el resto. */
+  .directors-list[data-preview-slug="florian"] { background: none; }
+  .directors-list[data-preview-slug="florian"] .directors-list__bg,
+  .directors-list[data-preview-slug="florian"] .directors-list__scrim {
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Milton Kremer: su foto es un frame vertical con bastante aire arriba de
+   la cabeza -- con "cover" + posición center (default) ese margen se
+   recortaba parejo arriba y abajo y terminaba comiéndose parte de la
+   frente/turbante. Ancla el recorte arriba en vez de al centro para que
+   se vea la cabeza completa (el sobrante se recorta abajo, en la zona
+   del torso, que no es crítica). */
+.directors-list[data-preview-slug="milton-kremer"] .directors-list__bg {
+  background-position: center top;
+}
+
+.directors-list__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: 0 var(--container-padding);
+  text-align: center;
+}
+
+.directors-list__logo {
+  /* Antes era texto ("Fértil") con la tipografía del sitio; ahora es el
+     isotipo/logotype ilustrado que exportaron para este lugar específico
+     (recursos/img/directors/fertil-menu-directores.png), ya recortado a
+     su contenido real -- el archivo original tenía muchísimo margen
+     transparente arriba/abajo (el dibujo solo ocupaba ~17% del alto del
+     canvas), y como <img> se dimensiona por su tamaño natural completo,
+     ese margen invisible empujaba la lista de nombres mucho más abajo de
+     lo que debía. El ancho en clamp mantiene proporciones similares al
+     tamaño que tenía el texto. */
+  width: clamp(200px, 22vw, 320px);
+  height: auto;
+  display: block;
+  /* El archivo es blanco/gris claro. Sobre el mostaza (estado por defecto)
+     tiene que verse negro (según el diseño); invert(1) lo oscurece sin
+     necesitar una segunda versión del archivo. Al previsualizar un
+     director (fondo oscuro) se saca el invert para que vuelva a blanco. */
+  filter: invert(1);
+  transition: filter var(--duration-base) var(--ease-default);
+}
+.directors-list.has-preview .directors-list__logo {
+  filter: none;
+}
+
+.directors-list__names {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.directors-list__name {
+  font-family: var(--font-serif);
+  font-size: clamp(14px, 1.6vw, 18px);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.directors-list__name.is-active {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+  .directors-list__content { gap: var(--space-4); }
+}
+
+/* =========================================================================
+   VISTA B — Detalle de director (grilla de videos)
+   ========================================================================= */
+.director-detail {
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-white);
+  color: var(--color-ink);
+  display: flex;
+  flex-direction: column;
+  /* Ancla la grilla justo debajo del nav (como en el diseño), en vez de
+     centrarla en toda la pantalla -- eso dejaba un hueco enorme arriba. */
+  justify-content: flex-start;
+  /* El padding-bottom reserva el espacio para el footer (posicionado
+     absolute); agrandarlo separa el nombre del director de la firma sin
+     tocar la posición del footer en sí. */
+  padding: calc(var(--nav-height) + var(--space-2)) 0 calc(var(--space-7) + var(--space-6));
+}
+
+.director-detail__grid-wrap {
+  position: relative;
+  padding: 0 var(--container-padding);
+  /* En pantallas anchas, limita qué tan ancha se pone la fila de 4 videos --
+     sin esto, a 25% cada uno terminaba enorme (edge-to-edge) en monitores
+     grandes. Con el max-width + auto-margin, la fila queda centrada y más
+     chica mantieniendo siempre 4 videos visibles, como en el diseño. */
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.director-detail__grid {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+.director-detail__grid::-webkit-scrollbar { display: none; }
+
+.director-detail__item {
+  /* 25% = exactamente 4 videos por vista (como en el diseño); el tamaño
+     real de cada uno ya no depende de esto sino del max-width de arriba. */
+  flex: 0 0 calc(25% - (var(--space-3) * 3 / 4));
+  min-width: 170px;
+}
+
+.director-detail__thumb {
+  display: block;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.director-detail__thumb img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+.director-detail__thumb:hover img { opacity: 0.85; }
+
+.director-detail__caption {
+  display: block;
+  margin-top: var(--space-2);
+  font-family: var(--font-serif);
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.director-detail__arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  /* Más chicas que antes (34px chocaba con el video pegado al borde del
+     contenedor); ahora quedan contenidas en la zona de padding lateral,
+     sin invadir la grilla. */
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+/* La flecha "anterior" debe desaparecer al inicio del carrusel (nada hacia
+   donde retroceder) y la "siguiente" al llegar al final -- el JS ya calcula
+   esto y pone [hidden], pero display:flex de esta misma clase le ganaba al
+   [hidden] por orden de cascada. Sin esto, ambas flechas se veían siempre. */
+.director-detail__arrow[hidden] { display: none; }
+.director-detail__arrow:hover { opacity: 0.6; }
+.director-detail__arrow img { width: 100%; height: auto; }
+.director-detail__arrow--prev { left: 6px; }
+.director-detail__arrow--next { right: 6px; }
+.director-detail__grid-wrap:not(.has-scroll) .director-detail__arrow { display: none; }
+
+.director-detail__name {
+  /* margin-top: auto lo empuja al fondo del flex container (junto al padding
+     reservado para el footer), en vez de quedar pegado justo debajo de la
+     grilla con un hueco vacío hasta el footer. */
+  margin-top: auto;
+  padding-top: var(--space-6);
+  text-align: center;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: clamp(20px, 3vw, 28px);
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .director-detail {
+    padding: calc(var(--nav-height) + var(--space-2)) 0 calc(var(--space-7) + var(--space-4));
+  }
+  .director-detail__grid {
+    flex-direction: column;
+    overflow: visible;
+  }
+  .director-detail__item { flex-basis: auto; min-width: 0; }
+  .director-detail__arrow { display: none; }
+  .director-detail__name { margin-top: var(--space-5); }
+}
+
+/* =========================================================================
+   MODAL de video — iframe Simian.me + flechas + filmstrip
+   ========================================================================= */
+.video-modal {
+  position: fixed;
+  inset: 0;
+  /* En mobile, la barra de direcciones dinámica hace que 100vh (o incluso
+     inset:0 en algunos motores) no cubra todo el alto real visible.
+     100dvh sigue el viewport visual actual; los navegadores sin soporte
+     ignoran esta línea y se quedan con inset:0, que ya cubre casi todo. */
+  height: 100vh;
+  height: 100dvh;
+  z-index: var(--z-modal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: rgba(0, 0, 0, 0.92);
+  padding: var(--space-4);
+}
+
+.video-modal__close {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--container-padding);
+  color: var(--color-white);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-modal__close svg { width: 22px; height: 22px; }
+
+/* Envuelve el stage + las dos flechas: las flechas quedan flotando sobre
+   los bordes del video (igual que en el mockup), no en fila aparte. */
+.video-modal__stage-wrap {
+  position: relative;
+  width: min(100%, 780px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-modal__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.video-modal__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  /* El marco SIEMPRE mide 16:9 -- así el modal no cambia de alto entre
+     videos y el título/filmstrip de abajo no saltan de lugar. Un spot
+     puntual que no sea 16:9 (ej. "Burger King - Oumph", que es 4:3) no
+     estira este marco: en cambio, ver .video-modal__frame-inner, que es
+     el que toma la proporción real del video y queda centrado adentro
+     con barras negras (el propio fondo #000 de este contenedor). */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-modal__frame-inner {
+  /* Ancho/alto en px se calculan en JS (ver fitFrameInner en
+     directors.js): por defecto ocupa todo el marco (16:9 == 16:9, sin
+     barras); si el JSON trae "aspectRatio" para el video, JS lo achica
+     al tamaño exacto que le cabe entero al marco -- más angosto (barras
+     a los lados) o más ancho (barras arriba/abajo) -- sin deformarlo ni
+     mover el layout de abajo. Estos valores son solo un respaldo por si
+     el JS no llegó a correr todavía en el primer instante. */
+  width: 100%;
+  height: 100%;
+}
+.video-modal__frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+/* Spinner mientras el iframe de Simian carga -- JS le agrega/saca la
+   clase is-loading (ver directors.js, evento "load" del iframe). Sin
+   esto el recuadro se veía negro y "colgado" ese rato. */
+.video-modal__frame.is-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: var(--color-white);
+  border-radius: 50%;
+  animation: fertil-spin 0.8s linear infinite;
+}
+@keyframes fertil-spin {
+  to { transform: rotate(360deg); }
+}
+
+.video-modal__caption {
+  color: var(--color-white);
+  font-family: var(--font-serif);
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.video-modal__arrow {
+  position: absolute;
+  top: 42%;
+  transform: translateY(-50%);
+  z-index: 2;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+/* Los íconos de flecha son oscuros (recursos/icons); sobre el fondo negro
+   del modal se invierten a blanco. */
+.video-modal__arrow img { width: 100%; height: auto; filter: invert(1); }
+.video-modal__arrow[hidden] { display: none; }
+.video-modal__arrow:hover { opacity: 0.7; }
+.video-modal__arrow--prev { left: -8px; }
+.video-modal__arrow--next { right: -8px; }
+
+.video-modal__filmstrip {
+  display: flex;
+  gap: var(--space-2);
+  max-width: min(100%, 780px);
+  overflow-x: auto;
+  /* Con las miniaturas más grandes (106px) ya no entran las 7 sin scroll
+     -- eso está bien (se puede seguir deslizando/con rueda), pero la
+     barra de scroll nativa se veía fea ahí abajo. Se oculta igual que en
+     el carrusel de la vista de detalle (.director-detail__grid), sin
+     perder la posibilidad de scrollear. */
+  scrollbar-width: none;
+}
+.video-modal__filmstrip::-webkit-scrollbar { display: none; }
+
+.video-modal__filmstrip-item {
+  flex: 0 0 auto;
+  width: 106px;
+}
+
+.video-modal__filmstrip-item button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+.video-modal__filmstrip-item button img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.video-modal__filmstrip-item.is-active button,
+.video-modal__filmstrip-item button:hover { opacity: 1; }
+
+@media (max-width: 640px) {
+  .video-modal__arrow { width: 26px; height: 26px; }
+  .video-modal__arrow--prev { left: 2px; }
+  .video-modal__arrow--next { right: 2px; }
+  .video-modal__filmstrip-item { width: 64px; }
+}

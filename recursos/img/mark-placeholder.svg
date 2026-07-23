@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+  <!-- Placeholder de la marca/isotipo de Fértil (reemplazar por el ícono real exportado del .ai: FERTIL WEB/PNGS/ILUSTRACIONES) -->
+  <path d="M24 4c3 6-3 10 0 16 3-6-3-10 0-16z" fill="currentColor"/>
+  <path d="M24 44c3-6-3-10 0-16 3 6-3 10 0 16z" fill="currentColor"/>
+  <path d="M4 24c6-3 10 3 16 0-6-3-10 3-16 0z" fill="currentColor"/>
+  <path d="M44 24c-6-3-10 3-16 0 6-3 10 3 16 0z" fill="currentColor"/>
+  <circle cx="24" cy="24" r="3.4" fill="currentColor"/>
+</svg>
