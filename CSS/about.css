@@ -220,7 +220,13 @@
   background: var(--color-black);
   display: flex;
   justify-content: center;
-  padding: var(--space-7) var(--container-padding);
+  align-items: center;
+  /* Panel a pantalla completa: la composición de letras "FOUNDERS"
+     desordenadas ocupa 100vh (100dvh donde se soporta) -- es una sección
+     dramática de título, no una franja chica. */
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--space-5) var(--container-padding);
 }
 /* OJO: el <img> va envuelto en un <picture> (para servir la versión mobile
    vs desktop según el viewport). El hijo directo del flex -- el que
@@ -232,7 +238,10 @@
    <picture> (el flex item real) y que el <img> lo llene al 100%. */
 .about-founders-title picture {
   display: block;
-  width: min(100%, 1200px);
+  /* Imagen grande (composición original 8000x4500, ~16:9): a ancho casi
+     completo llena el alto de la pantalla, con las letras desordenadas
+     repartidas por todo el panel de 100vh. */
+  width: min(100%, 1500px);
 }
 .about-founders-title img {
   display: block;
@@ -250,20 +259,59 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-7);
+  /* Centra cada fila SIN estirarla: acompaña a .founder { width:100% } de
+     abajo. Ojo -- esto reemplaza el centrado que antes intentaba hacer
+     margin:0 auto en .founder, que en un flex-column NO funcionaba: margin
+     auto ahí hacía que la fila se encogiera a su contenido (shrink-to-fit)
+     en vez de ocupar el ancho, dejando la foto y el texto apretados en el
+     medio y el ícono corrido a un costado en vez de detrás del texto a lo
+     ancho, como en la referencia. */
+  align-items: center;
 }
 
 .founder {
+  width: 100%;
   display: flex;
-  align-items: center;
-  gap: var(--space-7);
+  /* stretch (no center): la foto se estira a la MISMA altura que el bloque
+     de texto -- top y bottom alineados. Con center, la foto (más baja que el
+     texto) quedaba flotando centrada, con el texto sobresaliendo arriba y
+     abajo. Para que el stretch funcione, la foto NO puede tener una altura
+     fija: por eso aspect-ratio pasa a auto más abajo. */
+  align-items: stretch;
+  /* Espacio chico entre foto y texto: los 3 elementos (foto, texto, ícono)
+     van "en fila" y pegados, como en la referencia, NO desparramados con
+     huecos grandes. */
+  gap: 38px;
   max-width: 1360px;
   margin: 0 auto;
+  /* El grupo (foto + texto + ícono) va CENTRADO en la página -- antes se
+     apoyaba en un borde (flex-start/flex-end) y, al ser más chico tras bajar
+     la escala, dejaba mucho aire de un solo lado. Centrado queda equilibrado.
+     La alternancia Tarek/Santiago igual se nota porque el orden en el HTML
+     es distinto (Tarek: foto-texto; Santiago: texto-foto). */
+  justify-content: center;
 }
-.founder--santiago { flex-direction: row-reverse; }
+/* Santiago alterna respecto de Tarek: su texto va a la IZQUIERDA y su foto
+   a la DERECHA (Tarek es al revés). En el HTML, el bloque de Santiago ya
+   viene con el orden invertido (primero .founder__copy, después
+   .founder__media), así que con el flujo normal del flex (sin row-reverse)
+   queda copy-izquierda / media-derecha -- justo lo que se busca. Antes tenía
+   flex-direction:row-reverse ADEMÁS del DOM invertido: los dos "reversos"
+   se cancelaban y Santiago terminaba igual que Tarek (foto a la izquierda),
+   rompiendo la alternancia de la referencia. Por eso acá NO se pone
+   row-reverse. El ícono decorativo de Santiago va con left:0 (más abajo),
+   detrás del texto sobre el borde izquierdo. */
 
 .founder__media {
-  flex: 0 0 320px;
-  aspect-ratio: 3 / 4;
+  /* Foto a ~80% de escala (era 440px, se veía muy alta) -- ~352px en
+     desktop, para que toda la sección quede más compacta, como si estuviera
+     al 80% de zoom. min() para que en pantallas medianas no se pase. */
+  flex: 0 0 min(352px, 28vw);
+  /* aspect-ratio auto (no 3/4 fijo): así la foto puede estirarse a la altura
+     del texto vía align-items:stretch del .founder. La imagen de adentro usa
+     object-fit:cover, así que llena esa altura sin deformarse (recorta lo que
+     sobra). En mobile la media-query le devuelve un aspect-ratio fijo. */
+  aspect-ratio: auto;
   overflow: hidden;
   background: #111;
 }
@@ -275,25 +323,48 @@
 
 .founder__copy {
   position: relative;
-  flex: 1 1 0;
+  /* NO se estira a todo el ancho (antes flex:1 1 0): se ajusta al ancho del
+     texto (lo define max-width del .founder__bio). Así el texto queda pegado
+     a la foto y el ícono justo al lado, sin el hueco enorme que dejaba el
+     copy estirado. */
+  flex: 0 1 auto;
   min-width: 0;
-  padding: var(--space-6) 0;
+  /* Sin padding vertical: así la altura del copy es exactamente la del texto
+     (nombre arriba, bio abajo) y la foto -- que se estira a esa misma altura
+     -- queda alineada nombre-arriba / bio-abajo, sin desfasaje. */
+  padding: 0;
 }
 
 /* Ícono ilustrado del fundador, de fondo detrás de su propio texto --
-   grande y en baja opacidad para que no compita con la lectura. */
+   grande y en baja opacidad para que no compita con la lectura, pero lo
+   bastante visible como para leerse claro sobre el negro (como en la
+   referencia). */
 .founder__icon {
   position: absolute;
   top: 50%;
-  right: 0;
   transform: translateY(-50%);
-  width: 320px;
+  /* Pegado al costado del texto (no en un extremo lejano): arranca 40px
+     antes de que termine el texto (leve superposición) y se extiende hacia
+     afuera. left:calc(100% - 40px) toma el 100% del ancho del copy (=ancho
+     del texto) menos 40px -- ahí empieza el ícono, y como es más ancho, el
+     resto se sale del copy hacia la derecha, quedando justo al lado/detrás
+     del texto, como en la referencia. */
+  left: calc(100% - 40px);
+  right: auto;
+  /* El PNG viene recortado a su contenido real (sin el relleno transparente
+     del canvas cuadrado original) y con el alfa normalizado a full -- así
+     este width controla directo el tamaño visible. ~290px acompaña la escala
+     ~80% del resto de la sección. */
+  width: 290px;
   height: auto;
-  opacity: 0.14;
+  opacity: 0.28;
   z-index: 0;
   pointer-events: none;
 }
-.founder--santiago .founder__icon { right: auto; left: 0; }
+/* Santiago: espejo. El ícono va del lado IZQUIERDO del texto, extendiéndose
+   hacia la izquierda (right:calc(100% - 40px) ancla el borde derecho del
+   ícono 40px pasando el borde izquierdo del texto). */
+.founder--santiago .founder__icon { right: calc(100% - 40px); left: auto; }
 
 .founder__name,
 .founder__role,
@@ -304,24 +375,43 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.02em;
-  font-size: clamp(20px, 2.2vw, 28px);
+  /* ~80% del tamaño anterior (era 28px), para achicar toda la sección. */
+  font-size: clamp(16px, 1.75vw, 22px);
 }
 
 .founder__role {
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 12px;
   opacity: 0.7;
   margin-top: var(--space-2);
   margin-bottom: var(--space-4);
 }
 
 .founder__bio {
-  font-family: var(--font-ui);
-  font-size: clamp(14px, 1.1vw, 16px);
-  line-height: 1.65;
+  /* Serif (Times Newer Roman), igual que la referencia -- NO la sans (Inter)
+     que se usaba antes: eso era lo que hacía ver el texto distinto (letras
+     geométricas sin serifas) y más "suelto". El serif además es más
+     compacto, y con max-width en ch el mismo 52ch queda más angosto (la 'ch'
+     del serif es más finita), dando el ancho de columna de la referencia. */
+  font-family: var(--font-serif);
+  /* ~80% del tamaño anterior (era 16px) -- achica el alto del bloque de
+     texto (y con él la foto, que se estira a esa altura). Como max-width usa
+     ch, la columna se angosta en la misma proporción y se mantiene la misma
+     cantidad de líneas: es el efecto de "zoom 80%" que se pidió. */
+  font-size: clamp(12px, 0.9vw, 13px);
+  /* Interlineado más apretado (antes 1.65, quedaba muy separado). */
+  line-height: 1.4;
   opacity: 0.85;
   max-width: 52ch;
+  /* Justificado como en la referencia (bordes izq/der parejos). */
+  text-align: justify;
 }
+/* La bio es un contenedor con varios <p> -- reseteo el margin que el
+   navegador les pone por defecto y controlo yo la separación entre bloques
+   (más apretada que antes, ~0.9em). El <br> dentro del primer bloque hace el
+   salto de línea de "He was Executive Producer..." sin abrir espacio. */
+.founder__bio p { margin: 0; }
+.founder__bio p + p { margin-top: 0.9em; }
 
 /* ---------------------------------------------------------------------
    4. CIERRE -- panel rosa con firma grande
@@ -381,9 +471,13 @@
   .founder--santiago {
     flex-direction: column;
     align-items: stretch;
+    /* Apilado: se resetea el justify-content de escritorio (flex-start /
+       flex-end) para que no afecte el reparto vertical de la columna. */
+    justify-content: flex-start;
     gap: var(--space-5);
   }
   .founder__media { flex: none; width: 100%; aspect-ratio: 4 / 3; }
+  .founder__copy { flex: none; width: 100%; }
   .founder__icon { display: none; }
 }
 
