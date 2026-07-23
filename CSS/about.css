@@ -434,12 +434,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Panel de cierre a pantalla completa: al llegar al final de la página, el
+     rosa cubre TODO el alto del viewport. Antes la sección medía menos que la
+     pantalla, así que al scrollear hasta abajo asomaba una franja negra de la
+     sección anterior arriba. */
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .about-close__signature {
   width: min(46vw, 520px);
   height: auto;
-  margin-bottom: var(--space-7);
+  /* margin auto arriba y abajo: centra la firma verticalmente en el espacio
+     libre y empuja el footer (email + redes + isotipo) al fondo del panel,
+     como en la referencia. */
+  margin: auto 0;
 }
 
 .about-close .page-footer {
@@ -470,6 +479,8 @@
   font-family: var(--font-ui);
   font-size: 14px;
   letter-spacing: 0.02em;
+  /* Un poco más marcado (negrita) como en la referencia. */
+  font-weight: 600;
 }
 
 .about-close .isotype-mark {
