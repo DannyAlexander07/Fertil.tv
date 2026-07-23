@@ -215,23 +215,10 @@ body[data-preloading="true"] { overflow: hidden; height: 100vh; }
 .nav__links a[aria-current="page"]::after { right: 0; }
 
 /* Estado "isla flotante": se activa vía JS al hacer scroll en páginas largas.
-   Barra de ancho COMPLETO (edge-to-edge, sin márgenes ni esquinas
-   redondeadas -- por eso border-radius:0 acá, pisando el 999px de .nav),
-   más baja que la barra de reposo, con blur real (backdrop-filter) para que
-   se note como un "difuminado" del contenido que pasa por detrás en vez de
-   una píldora opaca flotando encima.
-   OJO -- historial de este bloque: antes tenía backdrop-filter:blur(14px)
-   en una píldora angosta con esquinas redondeadas (inset, ancho casi
-   completo) y eso pintaba mal en algunos navegadores/GPUs (un "corte"
-   horizontal a mitad del nav, mitad desenfocada y mitad no). En ese momento
-   se sacó el blur por un color sólido para evitar el bug. Ahora se prueba
-   de nuevo con blur, pero en una condición distinta: ancho 100% real (no
-   "casi completo") y sin border-radius (sin máscara redondeada que
-   recalcular) -- combinación que en las pruebas de este cambio (varios
-   anchos de pantalla, scroll rápido y lento) ya NO reprodujo el glitch. Si
-   en el navegador real llegara a reaparecer el corte, hay que volver a un
-   fondo sólido sin backdrop-filter (ver git history de este bloque) en vez
-   de perseguir el blur. */
+   Sin fondo -- transparente por completo (ni color sólido, ni blur, ni
+   borde): el nav es siempre invisible como caja, sólo se ve su texto/links
+   flotando sobre lo que sea que haya detrás, igual que en reposo. Ancho
+   completo (edge-to-edge) y más baja que la barra de reposo, nada más. */
 .nav--floating {
   top: 0;
   left: 0;
@@ -240,11 +227,8 @@ body[data-preloading="true"] { overflow: hidden; height: 100vh; }
   max-width: 100%;
   height: var(--nav-height-floating);
   border-radius: 0;
-  background: rgba(36, 32, 28, 0.55);
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 /* Nav sobre fondo claro (.nav--on-light, definida en el CSS de cada

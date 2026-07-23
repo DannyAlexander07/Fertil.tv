@@ -7,10 +7,17 @@
    texto); (4) panel de cierre rosa con la firma grande de Fértil.
    ========================================================================= */
 
-/* Nav sobre fondo claro: mismo comportamiento que Directors/Contact. */
+/* Nav sobre fondo claro: mismo comportamiento que Directors/Contact.
+   El color ya NO depende de .nav--floating (eso es sólo layout, ver
+   style.css) -- depende de si el nav cae encima de una sección oscura real
+   (.nav--on-dark, que main.js suma/saca comparando la posición del nav
+   contra las secciones marcadas [data-nav-theme="dark"]: acá,
+   about-founders-title y about-founder-list). Así el texto se queda oscuro
+   mientras el mostaza sigue detrás (por más que ya se haya scrolleado) y
+   recién pasa a blanco al llegar de verdad a una sección negra. */
 .nav--on-light { color: var(--color-ink); }
-.nav--on-light.nav--floating,
-.nav--floating.nav--on-light { color: var(--color-white); }
+.nav--on-light.nav--on-dark,
+.nav--on-dark.nav--on-light { color: var(--color-white); }
 
 /* ---------------------------------------------------------------------
    1. HERO -- mostaza + logo "pegado" (fixed vía JS) con reveal de texto

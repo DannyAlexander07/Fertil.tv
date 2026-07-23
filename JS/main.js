@@ -182,12 +182,41 @@
 
     var THRESHOLD = 40;
 
+    // Color del texto del nav: NO depende de si está "flotando" (eso sólo
+    // define el layout -- ancho completo/altura reducida, ver .nav--floating
+    // en style.css). Depende de qué hay REALMENTE detrás del nav en cada
+    // instante del scroll -- páginas como About tienen un hero clarísimo
+    // (mostaza) seguido de secciones bien oscuras (FOUNDERS, fondo negro):
+    // si el texto pasara a blanco apenas se activa el modo flotante (a los
+    // 40px de scroll, todavía sobre el mostaza) quedaría casi invisible ahí,
+    // y recién por casualidad se leería bien una vez alcanzada la sección
+    // negra. Por eso se marcan esas secciones con [data-nav-theme="dark"] en
+    // el HTML y acá se revisa, en cada scroll, si el nav cae encima de
+    // alguna de ellas -- sólo ahí se suma .nav--on-dark (texto blanco). En
+    // páginas sin ninguna sección marcada así, este querySelectorAll da
+    // vacío y .nav--on-dark nunca se activa: no cambia nada para ellas.
+    var darkSections = document.querySelectorAll('[data-nav-theme="dark"]');
+
+    function updateNavTheme() {
+      if (!darkSections.length) return;
+      var navRect = nav.getBoundingClientRect();
+      var navMidY = navRect.top + navRect.height / 2;
+      var overDark = false;
+      for (var i = 0; i < darkSections.length; i++) {
+        var r = darkSections[i].getBoundingClientRect();
+        if (navMidY >= r.top && navMidY <= r.bottom) { overDark = true; break; }
+      }
+      nav.classList.toggle("nav--on-dark", overDark);
+    }
+
     function onScroll() {
       nav.classList.toggle("nav--floating", window.scrollY > THRESHOLD);
+      updateNavTheme();
     }
 
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
   }
 
   /* ---------------------------------------------------------------------
