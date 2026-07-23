@@ -80,6 +80,13 @@
     window.addEventListener("resize", onScroll);
     // Estado inicial (por si la página carga ya scrolleada, ej. al recargar).
     update();
+    // Recién ahora el logo está en su posición correcta (pegado sobre el
+    // mostaza si estamos arriba, o fuera de vista si la página cargó ya
+    // scrolleada en una sección negra). Lo revelamos: hasta este punto está
+    // oculto vía CSS (.has-js .about-hero__logo sin .is-ready) para que, al
+    // refrescar estando scrolleado, NO se vea el logo negro fijo flotando
+    // sobre el fondo negro un instante antes de que el JS lo reacomode.
+    logoImg.classList.add("is-ready");
   }
 
   function safeInit(fn) {

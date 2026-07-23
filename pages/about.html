@@ -5,8 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About — Fértil</title>
   <meta name="description" content="Fértil: quiénes somos, nuestros fundadores y cómo trabajamos.">
+  <!-- Marca que hay JS ANTES de pintar: about.css usa .has-js para ocultar el
+       logo del hero hasta que about.js lo posicione (evita el "fantasma" del
+       logo negro sobre fondo negro al refrescar scrolleado). Si el JS está
+       desactivado, esta clase nunca se pone y el logo se muestra normal. -->
+  <script>document.documentElement.className += " has-js";</script>
   <link rel="stylesheet" href="../CSS/style.css?v=3">
-  <link rel="stylesheet" href="../CSS/about.css?v=3">
+  <link rel="stylesheet" href="../CSS/about.css?v=4">
 </head>
 <body class="about-page">
 
@@ -155,6 +160,6 @@
   </main>
 
   <script src="../JS/main.js?v=3"></script>
-  <script src="../JS/about.js?v=3"></script>
+  <script src="../JS/about.js?v=4"></script>
 </body>
 </html>

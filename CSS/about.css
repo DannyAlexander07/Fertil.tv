@@ -174,6 +174,17 @@
     contra una altura de padre calculada vía aspect-ratio. */
 }
 
+/* Anti-parpadeo al refrescar: el logo arranca OCULTO y about.js lo revela
+   (.is-ready) recién después de posicionarlo bien en el primer frame. Sin
+   esto, al recargar la página estando scrolleado en una sección negra, el
+   logo negro fijo (position:fixed, .is-pinned viene por defecto en el HTML)
+   se veía un instante flotando sobre el fondo negro -- un "fantasma" feo --
+   antes de que el JS lo soltara. Va detrás de .has-js (clase que un script
+   inline en el <head> pone apenas carga): así, si por algo el JS no corre,
+   el logo NO queda oculto para siempre -- se muestra normal. */
+.has-js .about-hero__logo { opacity: 0; }
+.has-js .about-hero__logo.is-ready { opacity: 1; transition: opacity 0.25s ease; }
+
 /* Modo "pegado": about.js suma esta clase mientras el slot (su posición
    NATURAL en el documento) todavía no llegó al centro de la pantalla --
    el logo se ve fijo ahí, centrado, mientras el texto de atrás sigue el
