@@ -19,6 +19,17 @@
 .nav--on-light.nav--on-dark,
 .nav--on-dark.nav--on-light { color: var(--color-white); }
 
+/* Hover de los links del menú SOLO en About (este archivo sólo se carga
+   acá): mientras el nav está sobre el mostaza (texto oscuro por defecto),
+   al pasar el mouse la letra se pone blanca. Se limita a .nav--on-light sin
+   .nav--on-dark, es decir, únicamente cuando el nav NO está sobre una
+   sección negra -- sobre el negro el texto ya es blanco de por sí y no hace
+   falta el hover. El subrayado usa currentColor, así que también acompaña
+   en blanco. */
+.nav--on-light:not(.nav--on-dark) .nav__links a:hover {
+  color: var(--color-white);
+}
+
 /* ---------------------------------------------------------------------
    1. HERO -- mostaza + logo "pegado" (fixed vía JS) con reveal de texto
 --------------------------------------------------------------------- */
@@ -99,20 +110,59 @@
   mask-size: var(--reveal-mask-size, 0 0);
 }
 
-/* Slot del logo: reserva SIEMPRE su lugar en el flujo normal del
-   documento (mismo ancho/alto que el logo), esté éste en modo fijo o no
-   -- así el resto de la página (fila de íconos, secciones siguientes)
-   nunca "salta" cuando about.js cambia el logo de modo. */
+/* "Outro" del hero: el tramo final, una vez que ya pasaron los 3 párrafos,
+   ocupa una pantalla completa propia -- el logo centrado en el medio de
+   ESE bloque (no del documento entero) y la fila de íconos pegada abajo
+   del todo, en vez de un bloque compacto que corta enseguida contra
+   FOUNDERS. position:relative acá es lo que permite anclar los íconos con
+   position:absolute más abajo. El centrado del logo-slot es vía flexbox
+   (align-items/justify-content), a propósito -- NO vía transform en este
+   contenedor ni en el slot: cualquier ancestro del logo con transform (o
+   filter/perspective/will-change) crea un nuevo "containing block" para
+   position:fixed, así que el logo "pegado" (fixed mientras tiene
+   .is-pinned, ver más abajo) dejaría de estar fijo a la PANTALLA real y
+   pasaría a estar fijo a ese ancestro -- que sí se mueve con el scroll de
+   la página. Eso pasó acá mismo: con transform:translate(-50%,-50%) en
+   .about-hero__logo-slot (el padre directo del <img> que alterna
+   .is-pinned), el logo "pegado" quedaba atado a ese slot en vez de a la
+   ventana y se movía con el scroll en lugar de quedarse quieto -- lo cual
+   además hacía que la superposición con el párrafo 3 (el efecto de reveal)
+   se desincronizara. Flexbox no tiene este problema: ninguna de las
+   propiedades de flex crea containing block para fixed.
+   100vh primero como fallback, pisado por 100dvh donde el navegador lo
+   soporte: 100vh se calcula contra el viewport "grande" (como si la barra
+   de direcciones/toolbar del navegador no estuviera), así que en mobile
+   (y en algunos navegadores de escritorio con toolbars dinámicos) el
+   bloque puede terminar midiendo MÁS que el alto realmente visible en
+   pantalla en ese momento -- dvh se ajusta al alto visible real, sea cual
+   sea el estado de esas barras, evitando ese desfasaje. */
+.about-hero__outro {
+  position: relative;
+  /* Un poco MÁS que una pantalla completa (100dvh + un extra): con
+     exactamente 100dvh, al scrollear hasta ver la fila de íconos abajo, el
+     borde superior de la pantalla caía justo en el final de los párrafos --
+     así que la última línea del párrafo 3 seguía asomando arriba del logo
+     (no llegaba a salir de cuadro). Ese extra empuja los párrafos fuera de
+     la pantalla por completo antes de que el panel (logo + íconos) quede a
+     la vista, dejándolo limpio como en la referencia: menú arriba, logo al
+     medio, íconos abajo, nada de texto de párrafo. El extra tiene que
+     superar el padding inferior de la fila de íconos (~96px) más un margen;
+     200px cumple ambos con aire de sobra. */
+  min-height: calc(100vh + 200px);
+  min-height: calc(100dvh + 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Slot del logo: reserva SIEMPRE su lugar (mismo ancho/alto que el logo),
+   esté éste en modo fijo o no -- así el resto de la página nunca "salta"
+   cuando about.js cambia el logo de modo. Sin position/transform propios:
+   el centrado lo hace .about-hero__outro (flex) de arriba -- ver esa nota
+   sobre por qué NO puede ser vía transform acá. */
 .about-hero__logo-slot {
   width: var(--about-logo-w);
   aspect-ratio: 1330 / 324; /* proporción real del PNG del isotipo */
-  /* OJO: el espacio antes de la fila de íconos va como margin-bottom, NUNCA
-     padding-bottom -- con box-sizing:border-box (global, ver style.css) un
-     padding acá se restaría de la caja que ya fija aspect-ratio, achicando
-     la altura real disponible para la imagen (quedaba en la mitad de lo
-     debido) sin que aspect-ratio se enterara. margin no cuenta para ese
-     cálculo, así que no lo afecta. */
-  margin: 0 auto var(--space-7);
 }
 
 .about-hero__logo {
@@ -146,7 +196,14 @@
   pointer-events: none;
 }
 
+/* Pegada abajo del todo del outro (position:absolute + bottom:0) -- no en
+   flujo normal después del logo, para que quede anclada al piso de la
+   pantalla de 100vh sin importar cuánto mida el logo arriba. */
 .about-hero__icons-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   padding: 0 var(--container-padding) var(--space-7);
@@ -165,8 +222,21 @@
   justify-content: center;
   padding: var(--space-7) var(--container-padding);
 }
-.about-founders-title img {
+/* OJO: el <img> va envuelto en un <picture> (para servir la versión mobile
+   vs desktop según el viewport). El hijo directo del flex -- el que
+   justify-content:center intenta centrar -- es el <picture>, NO el <img>.
+   Antes la restricción de ancho (min(100%,1200px)) vivía sólo en el <img>,
+   así que el <picture> quedaba a lo ancho de todo el contenedor y el <img>
+   se pegaba a la izquierda adentro suyo (por eso la imagen se veía corrida
+   a un costado en vez de centrada). La solución es ponerle el ancho al
+   <picture> (el flex item real) y que el <img> lo llene al 100%. */
+.about-founders-title picture {
+  display: block;
   width: min(100%, 1200px);
+}
+.about-founders-title img {
+  display: block;
+  width: 100%;
   height: auto;
 }
 
