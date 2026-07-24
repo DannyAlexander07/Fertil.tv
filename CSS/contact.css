@@ -138,6 +138,18 @@ body.contact-page {
 
 .social-row { grid-column: 1; justify-self: start; }
 .isotype-mark { grid-column: 3; justify-self: end; width: 50px; height: auto; }
+/* Email centrado a lo ancho en el footer (columna del medio del grid) y
+   alineado a la BASE (align-self:end) igual que las redes y el isotipo --
+   antes iba centrado vertical y quedaba flotando más arriba que los demás. */
+.contact-footer__email {
+  grid-column: 2;
+  justify-self: center;
+  align-self: end;
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
 
 /* Los íconos ya traen su propia forma recortada -- sin círculo/fondo extra. */
 .contact-page .social-row a {
@@ -157,22 +169,38 @@ body.contact-page {
 }
 
 @media (max-width: 900px) {
+  /* En mobile el contenido se apila y arranca ARRIBA (no centrado vertical):
+     "CONTACT" queda cerca del nav y la lista debajo, con el footer abajo
+     -- como en la referencia. */
+  .contact-hero { align-items: flex-start; }
   .contact-hero__inner {
     flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-4);
+    /* stretch para que "CONTACT" pueda centrarse a lo ancho (text-align);
+       la lista queda alineada a la izquierda igual. */
+    align-items: stretch;
+    gap: var(--space-5);
   }
+  /* "CONTACT" centrado a lo ancho en mobile (en desktop va a la izquierda). */
+  .contact-hero__label { text-align: center; }
 }
 
 @media (max-width: 768px) {
   /* En mobile la lista suele necesitar más alto del que da una pantalla
      (4 contactos + texto envuelto) -- ahí sí se permite scroll, a
      diferencia de desktop donde todo tiene que entrar en un solo golpe
-     de vista. */
+     de vista. dvh en vez de vh para que cubra el alto visible real. */
   .contact-hero {
     height: auto;
     min-height: 100vh;
+    min-height: 100dvh;
     padding: calc(var(--nav-height) + var(--space-4)) var(--container-padding) calc(var(--space-6) + var(--space-4));
   }
   .contact-list { gap: var(--space-4); }
+  /* "CONTACT" un poco más grande en mobile (el clamp lo dejaba en 20px). */
+  .contact-hero__label { font-size: 26px; }
+  /* Más aire entre "CONTACT" y la lista -- baja un poco los nombres. */
+  .contact-hero__inner { gap: var(--space-6); }
+  /* Que el email del footer no empuje contra los laterales en pantallas
+     angostas. */
+  .contact-footer__email { font-size: 12px; }
 }
