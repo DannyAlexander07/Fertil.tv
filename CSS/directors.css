@@ -95,7 +95,12 @@ body.preview-active .directors-list .isotype-mark {
    ========================================================================= */
 .directors-list {
   position: relative;
+  /* 100dvh (no 100vh): en mobile la barra de direcciones hace que 100vh sea
+     MÁS alto que el área visible, así que el footer (posicionado abajo) y los
+     íconos quedaban cortados abajo del pliegue y asomaba el mostaza. dvh
+     sigue el alto visible real y cubre justo la pantalla. */
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -228,7 +233,9 @@ body.preview-active .directors-list .isotype-mark {
    ========================================================================= */
 .director-detail {
   position: relative;
+  /* 100dvh igual que el listado -- cubre el alto visible real en mobile. */
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--color-white);
   color: var(--color-ink);
   display: flex;

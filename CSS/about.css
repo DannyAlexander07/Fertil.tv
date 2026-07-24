@@ -489,8 +489,7 @@
 }
 
 @media (max-width: 900px) {
-  .founder,
-  .founder--santiago {
+  .founder {
     flex-direction: column;
     align-items: stretch;
     /* Apilado: se resetea el justify-content de escritorio (flex-start /
@@ -498,7 +497,21 @@
     justify-content: flex-start;
     gap: var(--space-5);
   }
-  .founder__media { flex: none; width: 100%; aspect-ratio: 4 / 3; }
+  /* Santiago: en el HTML viene el texto ANTES de la foto (para la
+     alternancia de escritorio). En mobile queremos el mismo orden que
+     Tarek -- foto arriba, texto abajo -- así que se invierte con
+     column-reverse (foto primero, texto después). */
+  .founder--santiago {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--space-5);
+  }
+  /* La foto se muestra COMPLETA: el box toma la proporción real de la
+     imagen (720x1069), así object-fit:cover no recorta nada (la caja y la
+     foto tienen la misma relación). Antes usaba 4/3 (apaisado) y, siendo la
+     foto vertical, cover le comía la cabeza y los pies. */
+  .founder__media { flex: none; width: 100%; aspect-ratio: 720 / 1069; }
   .founder__copy { flex: none; width: 100%; }
   .founder__icon { display: none; }
 }

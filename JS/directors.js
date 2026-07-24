@@ -226,6 +226,12 @@
     var detailSection = document.querySelector("[data-director-detail]");
     if (listSection) listSection.hidden = true;
     if (detailSection) detailSection.hidden = false;
+    // Limpia el estado de "preview" al entrar al detalle. Si no, el body
+    // queda con .preview-active (que pinta el nav de BLANCO para contrastar
+    // sobre la foto oscura del listado) -- pero el detalle tiene fondo BLANCO,
+    // así que el nav blanco quedaba invisible hasta que uno scrolleaba o
+    // recargaba. Con esto el nav vuelve a texto oscuro y se ve de una.
+    applyPreview(null);
   }
 
   function renderDetail(slug) {
